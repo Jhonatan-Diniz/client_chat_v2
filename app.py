@@ -115,6 +115,8 @@ class LoginScreen(Screen):
         )
 
         yield Footer()
+    def on_mount(self):
+        self.login_andamento = False
 
     def on_button_pressed(self, event: Button.Pressed):
         if event.button.id == "entrar":
@@ -124,32 +126,42 @@ class LoginScreen(Screen):
         self.fazer_login()
 
     def fazer_login(self):
-        nome = self.query_one("#nome", Input).value.strip()
-        senha = self.query_one("#senha", Input).value.strip()
-
-        nome_b = nome.encode("utf-8")
-        senha_b = senha.encode("utf-8")
-
-        soc.sendall(
-            len(nome_b).to_bytes(8, "big") +
-            nome_b +
-            len(senha_b).to_bytes(8, "big") +
-            senha_b
-        )
-
-        time_exist : bytes | None = receive_data(soc, 1)
-        if time_exist == b"F" or not time_exist: 
-            self.notify("Usuário ou senha inválidos.", severity="error")
+        if self.login_andamento:
             return
-        if time_exist == b"A":
-            self.notify("Usuário já está logado!")
-            return
-        id : bytes | None = receive_data(soc, 1) 
-        if id is None: return
-        global meu_id, meu_nome
-        meu_id = int.from_bytes(id, "big")
-        meu_nome = nome
-        self.app.switch_screen("chat")
+        self.login_andamento = True
+        botao = self.query_one("#entrar", Button)
+        botao.disabled = True
+
+        try:
+            nome = self.query_one("#nome", Input).value.strip()
+            senha = self.query_one("#senha", Input).value.strip()
+    
+            nome_b = nome.encode("utf-8")
+            senha_b = senha.encode("utf-8")
+    
+            soc.sendall(
+                len(nome_b).to_bytes(8, "big") +
+                nome_b +
+                len(senha_b).to_bytes(8, "big") +
+                senha_b
+            )
+    
+            time_exist : bytes | None = receive_data(soc, 1)
+            if time_exist == b"F" or not time_exist: 
+                self.notify("Usuário ou senha inválidos.", severity="error")
+                return
+            if time_exist == b"A":
+                self.notify("Usuário já está logado!")
+                return
+            id : bytes | None = receive_data(soc, 1) 
+            if id is None: return
+            global meu_id, meu_nome
+            meu_id = int.from_bytes(id, "big")
+            meu_nome = nome
+            self.app.switch_screen("chat")
+        finally:
+            self.login_andamento = False
+            botao.disabled = False
 
 
 class ContatoItem(ListItem):
@@ -290,7 +302,7 @@ class ChatScreen(Screen):
             }
 
             save_msg(msg_sender_id, data)
-            self.chat_view.atualizar_chat()
+            self.app.call_from_thread(self.chat_view.atualizar_chat) 
 
     def send_msg(self, msg : dict):
         msg_encoded : bytes = msg["content"][1].encode("utf-8")
@@ -317,10 +329,10 @@ class ChatScreen(Screen):
                 "content":[".jpg", img_path]
             }
             save_msg(id_receiver, data)
-            self.app.call_from_thread(self.chat_view.atualizar_chat)
+            self.chat_view.atualizar_chat()
 
         except Exception as e:
-            print("ERROR ", e)
+            logger.debug(f"ERRO {e}")
             self.notify("ERROR AO ENVIAR A IMAGEM", severity="error")
 
 

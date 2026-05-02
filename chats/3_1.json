@@ -1,0 +1,18 @@
+[
+    {
+        "sender": 1,
+        "receiver": 3,
+        "content": [
+            ".txt",
+            "ashda"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 3,
+        "content": [
+            ".jpg",
+            "images/chat_file_3.jpg"
+        ]
+    }
+]

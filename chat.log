@@ -1,0 +1,31 @@
+2026-05-02 00:30:55,929 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:33:03,423 [DEBUG] Using proactor: IocpProactor
+2026-05-02 00:35:42,358 [DEBUG] Using proactor: IocpProactor
+2026-05-02 00:35:47,656 [DEBUG] Using proactor: IocpProactor
+2026-05-02 00:37:57,273 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:37:59,686 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:48:29,402 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:48:30,505 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:49:32,396 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:49:33,955 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:49:59,368 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:50:00,600 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:58:03,527 [DEBUG] Using selector: EpollSelector
+2026-05-02 00:58:05,197 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:05:09,792 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:05:11,628 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:07:20,613 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:07:22,472 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:08:19,341 [INFO] ENVIANDO IMAGEM
+2026-05-02 01:08:19,342 [INFO] imagem e tal: b'I'
+2026-05-02 01:09:22,575 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:09:23,610 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:11:41,626 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:11:43,015 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:12:08,768 [INFO] ENVIANDO IMAGEM
+2026-05-02 01:12:08,769 [INFO] imagem e tal: b'I'
+2026-05-02 01:12:08,782 [DEBUG] ERRO The `call_from_thread` method must run in a different thread from the app
+2026-05-02 01:13:16,842 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:13:19,901 [DEBUG] Using selector: EpollSelector
+2026-05-02 01:13:44,086 [INFO] ENVIANDO IMAGEM
+2026-05-02 01:13:44,087 [INFO] imagem e tal: b'I'

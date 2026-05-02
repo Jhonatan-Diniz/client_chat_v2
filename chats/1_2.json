@@ -1,0 +1,66 @@
+[
+    {
+        "sender": 2,
+        "receiver": 1,
+        "content": [
+            ".txt",
+            "dasdads"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "adsjdhasd"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "olaaaaaaaaa"
+        ]
+    },
+    {
+        "sender": 2,
+        "receiver": 1,
+        "content": [
+            ".jpg",
+            "images/chat_file_1.jpg"
+        ]
+    },
+    {
+        "sender": 2,
+        "receiver": 1,
+        "content": [
+            ".txt",
+            "hahahahah"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "ahhahahaha"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "ola"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".jpg",
+            "/mnt/c/Users/Jhonatan/programming/chat_aps/versao_textual/projeto/pastaimagem/gatodeterno.jpg"
+        ]
+    }
+]
