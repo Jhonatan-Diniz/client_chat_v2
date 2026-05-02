@@ -62,5 +62,45 @@
             ".jpg",
             "/mnt/c/Users/Jhonatan/programming/chat_aps/versao_textual/projeto/pastaimagem/gatodeterno.jpg"
         ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "dasdjohafdhauf"
+        ]
+    },
+    {
+        "sender": 2,
+        "receiver": 1,
+        "content": [
+            ".txt",
+            "dahsdosdh"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "dasdhasdjh"
+        ]
+    },
+    {
+        "sender": 2,
+        "receiver": 1,
+        "content": [
+            ".txt",
+            "dasdjhasdh"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "dashdads"
+        ]
     }
 ]

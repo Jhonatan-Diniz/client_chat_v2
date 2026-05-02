@@ -1,0 +1,34 @@
+[
+    {
+        "sender": 2,
+        "receiver": 1,
+        "content": [
+            ".txt",
+            "poqwerpdahfgi"
+        ]
+    },
+    {
+        "sender": 2,
+        "receiver": 1,
+        "content": [
+            ".txt",
+            "dkasjd"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "daosjd"
+        ]
+    },
+    {
+        "sender": 1,
+        "receiver": 2,
+        "content": [
+            ".txt",
+            "dfjaifi"
+        ]
+    }
+]
