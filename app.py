@@ -37,6 +37,8 @@ def carregar_chat(meu_id, contato_id):
     caminho = os.path.join(CHAT_FOLDER, nome_arquivo)
 
     if not os.path.exists(caminho):
+        with open(caminho, "w") as f:
+            json.dump([], f, indent=4)
         return []
 
     with open(caminho, "r", encoding="utf-8") as f:
@@ -55,8 +57,10 @@ def save_msg(id, data):
 
 def save_img(id, img_data) -> str:
     path_images = Path("images")
-    file_number = len(list(path_images.glob(".jpg")))
-    file_name = f"images/chat_file_{file_number+1}.jpf"
+    path_images.mkdir(exist_ok=True)
+
+    file_number = len(list(path_images.glob("*.jpg")))
+    file_name = f"images/chat_file_{file_number+1}.jpg"
     file = Path(file_name)
     file.write_bytes(img_data)
     return file_name
@@ -134,8 +138,11 @@ class LoginScreen(Screen):
         )
 
         time_exist : bytes | None = receive_data(soc, 1)
-        if time_exist is None: 
+        if time_exist == b"F" or not time_exist: 
             self.notify("Usuário ou senha inválidos.", severity="error")
+            return
+        if time_exist == b"A":
+            self.notify("Usuário já está logado!")
             return
         id : bytes | None = receive_data(soc, 1) 
         if id is None: return
@@ -199,17 +206,19 @@ class ChatScreen(Screen):
         yield self.input_msg
         yield Footer()
 
-        threading.Thread(
-            target=self.recv_msg,
-            args=(),
-            daemon=True
-        ).start()
-
     def on_mount(self):
         os.makedirs(CHAT_FOLDER, exist_ok=True)
 
         for c in self.contatos:
             self.lista_contatos.append(ContatoItem(c))
+
+        self.recv_thread = threading.Thread(
+            target=self.recv_msg,
+            args=(),
+            daemon=False
+        )
+
+        self.recv_thread.start()
 
     def on_list_view_selected(self, event: ListView.Selected):
         item = event.item
@@ -264,14 +273,15 @@ class ChatScreen(Screen):
 
             if msg_type == b"T":
                 data = {
-                        "sender": msg_sender_id,
-                        "receiver": meu_id,
-                        "content": ['.txt', msg.decode('utf-8')]
+                    "sender": msg_sender_id,
+                    "receiver": meu_id,
+                    "content": ['.txt', msg.decode('utf-8')]
                 }
                 save_msg(msg_sender_id, data)
-                self.chat_view.atualizar_chat()
-                return
+                self.app.call_from_thread(self.chat_view.atualizar_chat)
+                continue
 
+            logger.info(f"imagem e tal: {msg_type}")
             img_path = save_img(msg_sender_id, msg)
             data = {
                     "sender": msg_sender_id,
@@ -287,16 +297,32 @@ class ChatScreen(Screen):
         soc.sendall(b"T" + msg["receiver"].to_bytes(1, "big") + len(msg_encoded).to_bytes(8, "big") + msg_encoded)
 
     def send_img(self, img_path):
-        if id_receiver:=self.chat_view.contato_id is None:
-            self.notify("Não é possível enviar uma imagem pra ninguem cabeção!")
+        id_receiver = self.chat_view.contato_id
+        if id_receiver is None:
+            self.notify("Selecione um contato primeiro!")
             return
         img_data = b""
         try:
             with open(img_path, "rb") as file:
                 img_data = file.read()
-            soc.sendall(b"I" + id_receiver.to_bytes(1, "big") + len(img_data).to_bytes(8, "big") + img_data)
+            logger.info("ENVIANDO IMAGEM")
+            soc.sendall(
+                b"I" + id_receiver.to_bytes(1, "big") +
+                len(img_data).to_bytes(8, "big") +
+                img_data
+            )
+            data = {
+                "sender":meu_id,
+                "receiver": id_receiver,
+                "content":[".jpg", img_path]
+            }
+            save_msg(id_receiver, data)
+            self.app.call_from_thread(self.chat_view.atualizar_chat)
+
         except Exception as e:
             print("ERROR ", e)
+            self.notify("ERROR AO ENVIAR A IMAGEM", severity="error")
+
 
 class ChatApp(App):
     CSS = """
@@ -333,6 +359,7 @@ class ChatApp(App):
 
     def __init__(self):
         super().__init__()
+        self.theme = "ansi-dark"
 
     def on_mount(self):
         self.push_screen("login")
